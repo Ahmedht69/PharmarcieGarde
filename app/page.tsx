@@ -16,7 +16,7 @@ export default function Home() {
     const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null);
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+    const [viewMode, setViewMode] = useState<'list' | 'map' | 'favorites'>('list');
 
     useEffect(() => {
         const isProd = process.env.NODE_ENV === 'production';
@@ -93,7 +93,7 @@ export default function Home() {
             </div>
 
             <main className="flex-1 max-w-4xl mx-auto w-full p-4">
-                {viewMode === 'list' ? (
+                {viewMode === 'list' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                         {filteredAndSortedPharmacies.length > 0 ? (
                             filteredAndSortedPharmacies.map((pharmacy, index) => (
@@ -105,9 +105,21 @@ export default function Home() {
                             </div>
                         )}
                     </div>
-                ) : (
+                )}
+
+                {viewMode === 'map' && (
                     <div className="h-full">
                         <Map userLocation={userLocation} pharmacies={filteredAndSortedPharmacies} />
+                    </div>
+                )}
+
+                {viewMode === 'favorites' && (
+                    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16 mb-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>
+                        <p className="text-lg font-medium">Vos favoris apparaîtront ici.</p>
+                        <p className="text-sm">Fonctionnalité à venir bientôt !</p>
                     </div>
                 )}
             </main>
@@ -116,7 +128,7 @@ export default function Home() {
                 <p>© {new Date().getFullYear()} Pharmacie de Garde Fès. Données à titre indicatif.</p>
             </footer>
 
-            <BottomNav />
+            <BottomNav currentMode={viewMode} setMode={setViewMode} />
         </div>
     );
 }

@@ -1,8 +1,8 @@
 interface FilterBarProps {
     searchQuery: string;
     setSearchQuery: (q: string) => void;
-    viewMode: 'list' | 'map';
-    setViewMode: (mode: 'list' | 'map') => void;
+    viewMode: 'list' | 'map' | 'favorites';
+    setViewMode: (mode: 'list' | 'map' | 'favorites') => void;
 }
 
 export default function FilterBar({ searchQuery, setSearchQuery, viewMode, setViewMode }: FilterBarProps) {
@@ -25,7 +25,7 @@ export default function FilterBar({ searchQuery, setSearchQuery, viewMode, setVi
                     />
                 </div>
 
-                <div className="flex bg-white p-1 rounded-lg border border-gray-200 shadow-sm w-full sm:w-auto">
+                <div className="hidden sm:flex bg-white p-1 rounded-lg border border-gray-200 shadow-sm w-full sm:w-auto">
                     <button
                         onClick={() => setViewMode('list')}
                         className={`flex-1 sm:flex-none px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2
