@@ -113,7 +113,7 @@ export default function Home() {
                     </div>
                 )}
 
-                )}
+
             </main>
 
             <footer className="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500 mt-auto mb-16 md:mb-0">
