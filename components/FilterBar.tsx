@@ -1,8 +1,8 @@
 interface FilterBarProps {
     searchQuery: string;
     setSearchQuery: (q: string) => void;
-    viewMode: 'list' | 'map' | 'favorites';
-    setViewMode: (mode: 'list' | 'map' | 'favorites') => void;
+    viewMode: 'list' | 'map';
+    setViewMode: (mode: 'list' | 'map') => void;
 }
 
 export default function FilterBar({ searchQuery, setSearchQuery, viewMode, setViewMode }: FilterBarProps) {
