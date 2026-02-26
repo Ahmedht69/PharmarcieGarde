@@ -30,17 +30,21 @@ def get_pharmacy_details(url):
                 lat = float(match.group(1))
                 lon = float(match.group(2))
         
-        quartier = "Fes"
-        quartier_match = soup.find(string=re.compile("Quartier :"))
+        quartier = None
+        full_text = soup.get_text(" ", strip=True)
+        quartier_match = re.search(r"Quartier\s*:\s*([^|•\n]+?)(?:\s+Ville\s*:|$)", full_text)
         if quartier_match:
-             pass
+            quartier = quartier_match.group(1).strip()
 
-        return {
+        result = {
             "name": name,
             "phone": phone,
             "lat": lat,
-            "lon": lon
+            "lon": lon,
         }
+        if quartier:
+            result["quartier"] = quartier
+        return result
     except Exception as e:
         print(f"Error fetching details for {url}: {e}")
         return None

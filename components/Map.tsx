@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Pharmacy } from '@/types';
+import { parseAddress } from '@/utils/parseAddress';
 import L from 'leaflet';
 import { useEffect } from 'react';
 
@@ -55,13 +56,34 @@ export default function Map({ userLocation, pharmacies }: MapProps) {
                             key={idx}
                             position={[pharmacy.lat, pharmacy.lon]}
                         >
-                            <Popup>
+                            <Popup minWidth={180}>
                                 <div className="text-center">
-                                    <h3 className="font-bold">{pharmacy.name}</h3>
-                                    <p className="text-xs text-gray-500">{pharmacy.address}</p>
-                                    <a href={`tel:${pharmacy.phone}`} className="block mt-2 text-green-600 font-bold">
-                                        📞 Appeler
-                                    </a>
+                                    <h3 className="font-bold text-sm leading-tight">{pharmacy.name}</h3>
+                                    {pharmacy.quartier && (
+                                        <p className="text-xs text-gray-500 mt-0.5">🏙️ {pharmacy.quartier}</p>
+                                    )}
+                                    {parseAddress(pharmacy.address) && (
+                                        <p className="text-xs text-gray-400 mt-0.5">{parseAddress(pharmacy.address)}</p>
+                                    )}
+                                    {pharmacy.distance !== undefined && (
+                                        <p className="text-xs text-blue-500 font-semibold mt-1">📍 {pharmacy.distance} km</p>
+                                    )}
+                                    <div className="mt-2 flex gap-2 justify-center">
+                                        <a
+                                            href={`tel:${pharmacy.phone.replace(/\s/g, '')}`}
+                                            className="bg-green-500 text-white text-xs px-3 py-1.5 rounded-full font-bold hover:bg-green-600 transition-colors"
+                                        >
+                                            📞 Appeler
+                                        </a>
+                                        <a
+                                            href={`https://www.google.com/maps/dir/?api=1&destination=${pharmacy.lat},${pharmacy.lon}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="bg-blue-500 text-white text-xs px-3 py-1.5 rounded-full font-bold hover:bg-blue-600 transition-colors"
+                                        >
+                                            🗺️ Y aller
+                                        </a>
+                                    </div>
                                 </div>
                             </Popup>
                         </Marker>
